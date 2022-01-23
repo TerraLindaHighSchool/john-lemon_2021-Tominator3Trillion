@@ -3,23 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerMovement : MonoBehaviour
+[RequireComponent(typeof(PhotonView))]
+public class PlayerMovement : MonoBehaviour, IPunObservable
 {
     private Animator animator;
     private Rigidbody rb;
     private Vector3 moveDirection;
     private Quaternion rotation;
     private bool isWalking;
-    private bool isFirstPerson = false;
 
-    public Camera firstPersonCam;
-    public Camera thirdPersonCam;
+    public Camera cam;
 
     private AudioSource audioSource;
 
     [SerializeField] private float turnSpeed = 20f;
 
     PhotonView view;
+
+    public GameObject[] hideObjects;
+
+    GameObject currentObject = null;
+    public GameObject body;
+
+    private int currentObjectIndex = -1;
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
+        Debug.Log("OnPhotonSerializeView");
+        if(stream.IsWriting) {
+            stream.SendNext(currentObjectIndex);
+        }
+        else if (stream.IsReading) {
+            currentObjectIndex = (int)stream.ReceiveNext();
+        }
+    }
+    
 
 
     // Start is called before the first frame update
@@ -31,26 +48,62 @@ public class PlayerMovement : MonoBehaviour
         rotation = Quaternion.identity;
         view = GetComponent<PhotonView>();
 
+        if(view.IsMine) {
+            cam.enabled = true;
+        } else {
+            cam.enabled = false;
+            Destroy(rb);
+            //disable the collider
+            GetComponent<Collider>().enabled = false;
+            //disable root motion on animator
+            animator.applyRootMotion = false;
+
+            
+
+        }
+
+    }
+
+    void Update() {
+        if(view.IsMine) {
+            //set object index based on scroll wheel
+            if(Input.GetAxis("Mouse ScrollWheel") > 0) {
+                currentObjectIndex++;
+                if(currentObjectIndex >= hideObjects.Length) {
+                    currentObjectIndex = -1;
+                }
+            } else if(Input.GetAxis("Mouse ScrollWheel") < 0) {
+                currentObjectIndex--;
+                if(currentObjectIndex < -1) {
+                    currentObjectIndex = hideObjects.Length - 1;
+                }
+            }
+            
+        }
     }
 
     void FixedUpdate()
     {
-        if(view.IsMine) {
-            //check if f is pressed
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                isFirstPerson = !isFirstPerson;
-                if  (isFirstPerson)
-                {
-                    firstPersonCam.enabled = true;
-                    thirdPersonCam.enabled = false;
-                }
-                else
-                {
-                    firstPersonCam.enabled = false;
-                    thirdPersonCam.enabled = true;
-                }
+        if(currentObjectIndex == -1) {
+            if(currentObject!=null){
+                Destroy(currentObject);
+                currentObject = null;
             }
+            
+            body.SetActive(true);
+        }
+        else if(hideObjects[currentObjectIndex] != currentObject) {
+            if(currentObject!=null){
+                Destroy(currentObject);
+                currentObject = null;
+            }
+            body.SetActive(false);
+            currentObject = Instantiate(hideObjects[currentObjectIndex], transform.position, Quaternion.identity);
+        }
+
+
+        if(view.IsMine)  {
+            
 
             // Get user input
             float horizontal = Input.GetAxis("Horizontal");

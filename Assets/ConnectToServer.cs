@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class ConnectToServer : MonoBehaviourPunCallbacks
 {
+
+    public TextMeshProUGUI text;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +25,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined lobby");
+        text.text = "Connected";
         SceneManager.LoadScene("Lobby");
     }
 
