@@ -109,8 +109,10 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
 
-            // Use the input to set the movement direction
+            // Use the input to set the movement direction based on the camera's rotation
             moveDirection.Set(horizontal, 0f, vertical);
+            moveDirection = Camera.main.transform.TransformDirection(moveDirection);
+            moveDirection.y = 0.0f;
             moveDirection.Normalize();
 
             // Set the animator to walking or idle depending on whether the player is moving

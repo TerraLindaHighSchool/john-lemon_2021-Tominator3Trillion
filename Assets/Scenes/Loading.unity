@@ -274,9 +274,9 @@ MonoBehaviour:
   - Verifying IP
   - DDosing Host
   - Finishing Up
-  delay: 0.25
+  delay: 1
   loop: 0
-  randomness: 0.2
+  randomness: 1
 --- !u!1 &767574304
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 1994543851}
   - component: {fileID: 1994543850}
   m_Layer: 0
-  m_Name: ConnectToSetver
+  m_Name: ConnectToServer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
