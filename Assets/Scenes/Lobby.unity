@@ -7380,9 +7380,9 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.9339623, g: 0, b: 0, a: 1}
-  m_Intensity: 12
-  m_Range: 16.06
-  m_SpotAngle: 39.8535
+  m_Intensity: 0.2
+  m_Range: 11.23
+  m_SpotAngle: 59.807617
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -7444,9 +7444,9 @@ MonoBehaviour:
   flickeringLight: {fileID: 214293590}
   flickeringRenderer: {fileID: 41399011}
   flickerMode: 0
-  lightIntensityMin: 9.64
-  lightIntensityMax: 18.77
-  flickerDuration: 0.18
+  lightIntensityMin: 2.44
+  lightIntensityMax: 2.6
+  flickerDuration: 0.075
   intensityCurve:
     serializedVersion: 2
     m_Curve: []
