@@ -145,7 +145,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 foreach(Collider hitCollider in hitColliders) {
                     //if the collider is this player
                     if(hitCollider.gameObject == this.gameObject) {
-                        health -= Time.deltaTime * 25f;
+                        health -= Time.deltaTime * 50f;
                         //break out of the loop
                         break;
                     }
@@ -179,7 +179,12 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 angryCooldownImage.color =(Color.red);
                 angryCooldownImage.fillAmount = 1 - angryTime/angryTimeMax;
             } else {
-                angryCooldownImage.color = (Color.grey);
+                if(angryWarmUpTime/angryTimeCooldown >= 1f) {
+                    angryCooldownImage.color = (Color.white);
+                } else {
+                    angryCooldownImage.color = (Color.grey);
+                }
+                
                 angryCooldownImage.fillAmount = angryWarmUpTime/angryTimeCooldown;
             }
 
@@ -452,7 +457,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         isAlive = false;
         skinnedMeshRenderer.material = GhostMaterial;
         rb.isKinematic = true;
-        collider.enabled = false;
+        GetComponent<Collider>().enabled = false;
+        currentObjectIndex = -1;
 
         //set the animator speed to 10
         animator.speed = 2f;
