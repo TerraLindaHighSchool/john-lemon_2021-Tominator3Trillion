@@ -13,8 +13,11 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private Quaternion rotation;
     private bool isWalking;
 
+
+    public static bool choseHunter;
+
     private bool isAlive = true;
-    private bool isHunter = false;
+    public bool isHunter = false;
     private bool angry = false;
 
     public float health = 100f;
@@ -83,6 +86,17 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     }
     
 
+    [PunRPC]
+    public void RPC_SetHunter(bool isHunter) {
+        this.isHunter = isHunter;
+        if(isHunter) {
+            skinnedMeshRenderer.material = HunterMaterial;
+            foreach(GameObject eye in eyes) {
+                eye.GetComponent<LineRenderer>().enabled = true;
+                eye.transform.GetChild(0).gameObject.SetActive(true);
+            }
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -93,17 +107,14 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         rotation = Quaternion.identity;
         view = GetComponent<PhotonView>();
 
+        
+
         if(view.IsMine) {
-            if(PhotonNetwork.IsMasterClient) {
-                isHunter = true;
-            }
+            isHunter = choseHunter;
+            view.RPC("RPC_SetHunter", RpcTarget.AllBuffered, isHunter);
         }
 
-        if(view.Owner.IsMasterClient) {
-            isHunter = true;
-        }
-
-        if(isHunter) {
+        if(isHunter && view.IsMine) {
             skinnedMeshRenderer.material = HunterMaterial;
             if(view.IsMine) {
                 hunterCanvas.SetActive(true);
@@ -112,6 +123,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             //loop through eyes and remove line renderers
             foreach(GameObject eye in eyes) {
                 eye.GetComponent<LineRenderer>().enabled = false;
+                eye.transform.GetChild(0).gameObject.SetActive(false);
             }
         }
 
@@ -130,6 +142,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         }
 
     }
+
+
 
     void Update() {
         if(view.IsMine && !isHunter) {
@@ -240,6 +254,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                         
                 foreach(GameObject eye in eyes) {
                     eye.GetComponent<LineRenderer>().enabled = true;
+                    eye.transform.GetChild(0).gameObject.SetActive(true);
                      //line renderer from eye to target
                     eye.GetComponent<LineRenderer>().SetPosition(0, eye.transform.position);
                     eye.GetComponent<LineRenderer>().SetPosition(1, target);
@@ -256,6 +271,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 //animator.enabled = true;
                 foreach(GameObject eye in eyes) {
                     eye.GetComponent<LineRenderer>().enabled = false;
+                    eye.transform.GetChild(0).gameObject.SetActive(false);
                 }
                 if(laserAudioSource.isPlaying) {
                     laserAudioSource.Stop();
@@ -395,6 +411,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                         
                         foreach(GameObject eye in eyes) {
                             eye.GetComponent<LineRenderer>().enabled = true;
+                            eye.transform.GetChild(0).gameObject.SetActive(true);
                             //line renderer from eye to target
                             eye.GetComponent<LineRenderer>().SetPosition(0, eye.transform.position);
                             eye.GetComponent<LineRenderer>().SetPosition(1, target);
@@ -416,6 +433,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 //animator.enabled = true;
                 foreach(GameObject eye in eyes) {
                     eye.GetComponent<LineRenderer>().enabled = false;
+                    eye.transform.GetChild(0).gameObject.SetActive(false);
                 }
                 if(laserAudioSource.isPlaying) {
                     laserAudioSource.Stop();

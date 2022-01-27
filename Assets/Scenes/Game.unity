@@ -321,7 +321,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &149836754
 GameObject:
@@ -358,7 +358,7 @@ Transform:
   - {fileID: 1995807981}
   - {fileID: 2116910120}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &152715822
 PrefabInstance:
@@ -3647,7 +3647,7 @@ PrefabInstance:
     - target: {fileID: 1134143264, guid: 78b59fdf994d437419331356d2aa2498, type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     - target: {fileID: 267294547708986133, guid: 78b59fdf994d437419331356d2aa2498,
         type: 3}
       propertyPath: waypoints.Array.size
@@ -3934,7 +3934,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &683585859
 GameObject:
@@ -4162,7 +4162,7 @@ PrefabInstance:
     - target: {fileID: 1134143264, guid: 78b59fdf994d437419331356d2aa2498, type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     - target: {fileID: 267294547708986133, guid: 78b59fdf994d437419331356d2aa2498,
         type: 3}
       propertyPath: waypoints.Array.size
@@ -4284,7 +4284,7 @@ Transform:
   - {fileID: 686765960}
   - {fileID: 1721272599}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1058843336
 GameObject:
@@ -4388,7 +4388,7 @@ PrefabInstance:
     - target: {fileID: 1134143264, guid: 78b59fdf994d437419331356d2aa2498, type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     - target: {fileID: 267294547708986133, guid: 78b59fdf994d437419331356d2aa2498,
         type: 3}
       propertyPath: waypoints.Array.size
@@ -4607,7 +4607,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1331229033
 GameObject:
@@ -4639,71 +4639,6 @@ Transform:
   m_Father: {fileID: 960734803}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1404982137
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1404982139}
-  - component: {fileID: 1404982138}
-  - component: {fileID: 1404982140}
-  m_Layer: 0
-  m_Name: GameEnding
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1404982138
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404982137}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.9471664, z: 3.985691}
-  m_Center: {x: 0, y: 0.47358322, z: -0.0019168854}
---- !u!4 &1404982139
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404982137}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 1, z: 1.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1404982140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404982137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb26ec4ad52bee4abda40577d2c183a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeDuration: 1
-  displayImageDuration: 1
-  player: {fileID: 0}
-  exitBackgroundImageCanvasGroup: {fileID: 2128107090}
-  caughtBackgroundImageCanvasGroup: {fileID: 1058843338}
-  exitAudio: {fileID: 75395313}
-  caughtAudio: {fileID: 477084528}
-  hasAudioPlayed: 0
 --- !u!1 &1574634943
 GameObject:
   m_ObjectHideFlags: 0
@@ -4765,12 +4700,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7934731898602639612, guid: 4b18faf168b538247af449c21f74f266,
     type: 3}
-  minX: 0
-  maxX: 0
-  minZ: 0
-  maxZ: 0
-  minY: 0
-  maxY: 0
 --- !u!4 &1678168127
 Transform:
   m_ObjectHideFlags: 0
@@ -4783,7 +4712,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721272598
 GameObject:
@@ -5038,7 +4967,7 @@ PrefabInstance:
         type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fbc94ed34d58544ab6c1683a601a3bb, type: 3}
 --- !u!4 &1995807981 stripped
@@ -5139,7 +5068,7 @@ Transform:
   m_LocalScale: {x: 6.96, y: 1, z: 4.45}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2116910119
 PrefabInstance:
@@ -5227,7 +5156,7 @@ PrefabInstance:
         type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fbc94ed34d58544ab6c1683a601a3bb, type: 3}
 --- !u!4 &2116910120 stripped
@@ -5338,7 +5267,7 @@ PrefabInstance:
     - target: {fileID: 1134143264, guid: 78b59fdf994d437419331356d2aa2498, type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     - target: {fileID: 267294547708986133, guid: 78b59fdf994d437419331356d2aa2498,
         type: 3}
       propertyPath: waypoints.Array.size
@@ -5508,7 +5437,7 @@ PrefabInstance:
         type: 3}
       propertyPath: gameEnding
       value: 
-      objectReference: {fileID: 1404982140}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fbc94ed34d58544ab6c1683a601a3bb, type: 3}
 --- !u!4 &8789168838561570730 stripped
