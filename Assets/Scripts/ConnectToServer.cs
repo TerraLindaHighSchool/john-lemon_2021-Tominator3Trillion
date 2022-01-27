@@ -14,6 +14,8 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        //debug screen resolution
+        Debug.Log(Screen.width + "x" + Screen.height);
     }
 
     public override void OnConnectedToMaster()

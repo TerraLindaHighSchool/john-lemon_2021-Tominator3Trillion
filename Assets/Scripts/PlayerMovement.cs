@@ -58,6 +58,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     public GameObject head;
 
+    public GameObject map;
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if(stream.IsWriting && view.IsMine) {
@@ -106,6 +108,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         rb = GetComponent<Rigidbody>();
         rotation = Quaternion.identity;
         view = GetComponent<PhotonView>();
+
+        map.SetActive(false);
 
         
 
@@ -169,9 +173,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
         }
 
-        if(health <= 0f) {
-            Die();
-        }
+        
 
 
         if(!view.IsMine) {
@@ -285,6 +287,9 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         }
 
         if(view.IsMine && isAlive) {
+            if(health <= 0f) {
+                Die();
+            }
             //set object index based on scroll wheel
             if(Input.GetAxis("Mouse ScrollWheel") > 0) {
                 currentObjectIndex++;
@@ -298,6 +303,12 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 }
             }
             
+        }
+
+        if(view.IsMine) {
+            if(Input.GetKeyDown(KeyCode.M)) {
+                map.SetActive(!map.activeSelf);
+            }
         }
     }
 
