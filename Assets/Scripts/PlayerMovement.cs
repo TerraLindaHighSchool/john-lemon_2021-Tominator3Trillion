@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private bool isAlive = true;
     public bool isHunter = false;
     private bool angry = false;
+    private bool holdBreath = false;
 
     public float health = 100f;
 
@@ -29,6 +30,21 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public GameObject hunterCanvas;
     public Image angryCooldownImage;
     public GameObject angryPost;
+    public AudioSource angrySound;
+
+    private float holdBreathTime = 0f;
+    public float holdBreathTimeMax = 5f;
+    private float holdBreathWarmUpTime = 30f;
+    public float holdBreathTimeCooldown = 50f;
+    public Image holdBreathCooldownImage;
+    public GameObject holdBreathPost;
+    public AudioSource breathingSource;
+    public AudioClip breathingClip;
+    public AudioClip inhaleClip;
+
+    private bool wasHoldingBreath = false;
+    
+
 
     public Camera cam;
 
@@ -66,6 +82,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             stream.SendNext(currentObjectIndex);
             stream.SendNext(isAlive);
             stream.SendNext(angry);
+            stream.SendNext(holdBreath);
             stream.SendNext(laserImpactPosition);
             
         }
@@ -82,6 +99,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             // }
 
             angry = (bool)stream.ReceiveNext();
+            holdBreath = (bool)stream.ReceiveNext();
             wantedLaserImpactPosition = (Vector3)stream.ReceiveNext();
             
         }
@@ -228,6 +246,88 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                     angryTime = 0f;
                 }
             }
+        } else if (!view.IsMine) {
+            if(!holdBreath) {if(!holdBreath) {
+                holdBreathWarmUpTime+=Time.deltaTime;
+            }
+
+            if(holdBreath) {
+                holdBreathCooldownImage.color =(Color.red);
+                holdBreathCooldownImage.fillAmount = 1 - holdBreathTime/holdBreathTimeMax;
+            } else {
+                if(holdBreathWarmUpTime/holdBreathTimeCooldown >= 1f) {
+                    holdBreathCooldownImage.color = (Color.white);
+                } else {
+                    holdBreathCooldownImage.color = (Color.grey);
+                }
+                
+                holdBreathCooldownImage.fillAmount = holdBreathWarmUpTime/holdBreathTimeCooldown;
+            }
+
+
+            if(holdBreathWarmUpTime >= holdBreathTimeCooldown) {
+                if(Input.GetKeyDown(KeyCode.Space)) {
+                    holdBreath = true;
+                    holdBreathPost.SetActive(true);
+                    //triple animation speed
+                    animator.speed = 5f;
+                    //triple audio speed
+                    audioSource.pitch = 5f;
+                    holdBreathWarmUpTime = 0f;
+                }
+            }
+            if(holdBreath) {
+                holdBreathTime += Time.deltaTime;
+                if(holdBreathTime >= holdBreathTimeMax) {
+                    holdBreath = false;
+                    holdBreathPost.SetActive(false);
+                    //reset animation speed
+                    animator.speed = 1f;
+                    //reset audio speed
+                    audioSource.pitch = 1f;
+                    holdBreathTime = 0f;
+                }
+            }
+                holdBreathWarmUpTime+=Time.deltaTime;
+            }
+
+            if(holdBreath) {
+                holdBreathCooldownImage.color =(Color.red);
+                holdBreathCooldownImage.fillAmount = 1 - holdBreathTime/holdBreathTimeMax;
+            } else {
+                if(holdBreathWarmUpTime/holdBreathTimeCooldown >= 1f) {
+                    holdBreathCooldownImage.color = (Color.white);
+                } else {
+                    holdBreathCooldownImage.color = (Color.grey);
+                }
+                
+                holdBreathCooldownImage.fillAmount = holdBreathWarmUpTime/holdBreathTimeCooldown;
+            }
+
+
+            if(holdBreathWarmUpTime >= holdBreathTimeCooldown) {
+                if(Input.GetKeyDown(KeyCode.Space)) {
+                    holdBreath = true;
+                    holdBreathPost.SetActive(true);
+                    //triple animation speed
+                    animator.speed = 5f;
+                    //triple audio speed
+                    audioSource.pitch = 5f;
+                    holdBreathWarmUpTime = 0f;
+                }
+            }
+            if(holdBreath) {
+                holdBreathTime += Time.deltaTime;
+                if(holdBreathTime >= holdBreathTimeMax) {
+                    holdBreath = false;
+                    holdBreathPost.SetActive(false);
+                    //reset animation speed
+                    animator.speed = 1f;
+                    //reset audio speed
+                    audioSource.pitch = 1f;
+                    angryTime = 0f;
+                }
+            }
         }
 
 
@@ -284,6 +384,16 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             }
 
             
+        } else if(!view.IsMine) {
+            if(holdBreath && !wasHoldingBreath) {
+                //play one shot
+                breathingSource.PlayOneShot(breathingClip);
+                wasHoldingBreath = true;
+                
+            } else if(!holdBreath && wasHoldingBreath) {
+                breathingSource.clip = breathingClip;
+                breathingSource.Play();
+            }
         }
 
         if(view.IsMine && isAlive) {

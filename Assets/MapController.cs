@@ -11,12 +11,40 @@ public class MapController : MonoBehaviour
 
     public GameObject hunterSprite;
 
+    private int frame = 0;
+
+    public float multiplierDivisorWidth = 597f;
+    public float multiplierMultiplierWidth = 8.8f;
+    public float multiplierDivisorHeight = 312f;
+    public float multiplierMultiplierHeight = 8.8f;
+
+
+    //true = width, false = height
+    public bool getEqualSide() {
+        if(GetComponent<RectTransform>().rect.width/GetComponent<RectTransform>().rect.height > 1572/822) {
+            return false;
+        } else {
+            return true;
+        }
+        
+    }
 
     public Vector2 playerXZToXY(Vector3 playerXZ) {
 
-        Debug.Log(GetComponent<RectTransform>().rect.width);
-        return new Vector2(playerXZ.x*8.8f, (playerXZ.z-3.49f)*8.8f);
+        if(getEqualSide()) {
+            Debug.Log(GetComponent<RectTransform>().rect.width);
+            float multiplier = GetComponent<RectTransform>().rect.width/multiplierDivisorWidth;
+            return new Vector2(playerXZ.x*multiplierMultiplierWidth*multiplier, (playerXZ.z-3.49f)*multiplierMultiplierWidth*multiplier);
+        } else {
+            Debug.Log(GetComponent<RectTransform>().rect.height);
+            float multiplier = GetComponent<RectTransform>().rect.height/multiplierDivisorHeight;
+            return new Vector2(playerXZ.x*multiplierMultiplierHeight*multiplier, (playerXZ.z-3.49f)*multiplierMultiplierHeight*multiplier);
+        }
+        
     }
+
+    
+
 
     void Start()
     {
@@ -36,15 +64,20 @@ public class MapController : MonoBehaviour
 
     
 
-    void Update()
+    void FixedUpdate()
     {
-        int i = 0;
-        foreach(GameObject hunter in hunters) {
-            hunterSprites[i].GetComponent<RectTransform>().anchoredPosition = playerXZToXY(hunter.transform.position);
-            //set huntersprite size based on the width of the screen
-            hunterSprites[i].GetComponent<RectTransform>(). = new Vector2(GetComponent<RectTransform>().rect.width/30, GetComponent<RectTransform>().rect.width/30);
+        
+        if(frame>=60) {
+            int i = 0;
+            foreach(GameObject hunter in hunters) {
+                hunterSprites[i].GetComponent<RectTransform>().anchoredPosition = playerXZToXY(hunter.transform.position);
+                //set huntersprite size based on the width of the screen
+                hunterSprites[i].GetComponent<RectTransform>().sizeDelta = new Vector2(GetComponent<RectTransform>().rect.width/3, GetComponent<RectTransform>().rect.height/3);
 
-            i++;
+                i++;
+            }
+            frame=0;
         }
+        frame++;
     }
 }
