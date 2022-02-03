@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     private float holdBreathTime = 0f;
     public float holdBreathTimeMax = 5f;
-    private float holdBreathWarmUpTime = 30f;
+    private float holdBreathWarmUpTime = 10f;
     public float holdBreathTimeCooldown = 50f;
     public Image holdBreathCooldownImage;
     public GameObject holdBreathPost;
@@ -246,8 +246,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                     angryTime = 0f;
                 }
             }
-        } else if (!view.IsMine) {
-            if(!holdBreath) {if(!holdBreath) {
+        } else if (view.IsMine) {
+            if(!holdBreath) {
                 holdBreathWarmUpTime+=Time.deltaTime;
             }
 
@@ -269,27 +269,23 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 if(Input.GetKeyDown(KeyCode.Space)) {
                     holdBreath = true;
                     holdBreathPost.SetActive(true);
-                    //triple animation speed
-                    animator.speed = 5f;
-                    //triple audio speed
-                    audioSource.pitch = 5f;
                     holdBreathWarmUpTime = 0f;
-                }
-            }
+                    breathingSource.Stop();
+                    breathingSource.PlayOneShot(inhaleClip);
+            }}
+
             if(holdBreath) {
                 holdBreathTime += Time.deltaTime;
                 if(holdBreathTime >= holdBreathTimeMax) {
                     holdBreath = false;
                     holdBreathPost.SetActive(false);
-                    //reset animation speed
-                    animator.speed = 1f;
-                    //reset audio speed
-                    audioSource.pitch = 1f;
                     holdBreathTime = 0f;
+                    breathingSource.clip = breathingClip;
+                    breathingSource.Play();
                 }
             }
-                holdBreathWarmUpTime+=Time.deltaTime;
-            }
+            
+            
 
             if(holdBreath) {
                 holdBreathCooldownImage.color =(Color.red);
@@ -303,31 +299,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 
                 holdBreathCooldownImage.fillAmount = holdBreathWarmUpTime/holdBreathTimeCooldown;
             }
-
-
-            if(holdBreathWarmUpTime >= holdBreathTimeCooldown) {
-                if(Input.GetKeyDown(KeyCode.Space)) {
-                    holdBreath = true;
-                    holdBreathPost.SetActive(true);
-                    //triple animation speed
-                    animator.speed = 5f;
-                    //triple audio speed
-                    audioSource.pitch = 5f;
-                    holdBreathWarmUpTime = 0f;
-                }
-            }
-            if(holdBreath) {
-                holdBreathTime += Time.deltaTime;
-                if(holdBreathTime >= holdBreathTimeMax) {
-                    holdBreath = false;
-                    holdBreathPost.SetActive(false);
-                    //reset animation speed
-                    animator.speed = 1f;
-                    //reset audio speed
-                    audioSource.pitch = 1f;
-                    angryTime = 0f;
-                }
-            }
+            
         }
 
 
@@ -387,7 +359,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         } else if(!view.IsMine) {
             if(holdBreath && !wasHoldingBreath) {
                 //play one shot
-                breathingSource.PlayOneShot(breathingClip);
+                breathingSource.PlayOneShot(inhaleClip);
                 wasHoldingBreath = true;
                 
             } else if(!holdBreath && wasHoldingBreath) {
