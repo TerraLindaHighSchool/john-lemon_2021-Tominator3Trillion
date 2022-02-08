@@ -2801,6 +2801,8 @@ MonoBehaviour:
   body: {fileID: 7934731898602639602}
   skinnedMeshRenderer: {fileID: 7934731898616241652}
   GhostMaterial: {fileID: 2100000, guid: 08b61abef78f6844986e51f3590c5532, type: 2}
+  deadBodyPrefab: {fileID: 8452998745197876210, guid: 2f338e535ada6c74eaa807718320ff6d,
+    type: 3}
   HunterMaterial: {fileID: 2100000, guid: 0fdffbd531fdb28429b09be13b8419fc, type: 2}
   eyes:
   - {fileID: 7934731898602639610}
@@ -2992,6 +2994,12 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: IsWalking
+  - Type: 9
+    SynchronizeType: 0
+    Name: Die
+  - Type: 9
+    SynchronizeType: 0
+    Name: GetUp
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0

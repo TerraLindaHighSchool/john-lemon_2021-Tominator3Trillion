@@ -18,17 +18,32 @@ public class RoomLobbyPlayer : MonoBehaviour
     public Material normalMaterial;
 
     public SkinnedMeshRenderer skinnedMeshRenderer;
+    private Animator animator;
+
+    public GameObject emoteUI;
 
 
 
     void Start() {
         view = GetComponent<PhotonView>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         //look at main camera only on the y axis
         transform.LookAt(Camera.main.transform.position, Vector3.up);
+
+        if(view.IsMine)
+        {
+            if(Input.GetKeyDown(KeyCode.Z))
+            {
+                emoteUI.SetActive(true);
+            } else if(Input.GetKeyUp(KeyCode.Z))
+            {
+                emoteUI.SetActive(false);
+            }
+        }
     }
 
     
@@ -104,5 +119,20 @@ public class RoomLobbyPlayer : MonoBehaviour
     [PunRPC]
     void RPC_StartGame() {
         PhotonNetwork.LoadLevel("Game");
+    }
+
+    public void CallEmote(int id) {
+        view.RPC("RPC_Emote", RpcTarget.All, id);
+        Emote(id);
+    }
+
+    [PunRPC]
+    void RPC_Emote(int id) {
+        Debug.Log("Emote: " + id);
+        Emote(id);
+    }
+
+    private void Emote(int id) {
+        animator.SetInteger("Emote", id);
     }
 }

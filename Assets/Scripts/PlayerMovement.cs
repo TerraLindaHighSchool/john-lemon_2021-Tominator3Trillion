@@ -61,6 +61,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     public SkinnedMeshRenderer skinnedMeshRenderer;
     public Material GhostMaterial;
+    public GameObject deadBodyPrefab;
     public Material HunterMaterial;
 
     private int currentObjectIndex = -1;
@@ -80,7 +81,6 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if(stream.IsWriting && view.IsMine) {
             stream.SendNext(currentObjectIndex);
-            stream.SendNext(isAlive);
             stream.SendNext(angry);
             stream.SendNext(holdBreath);
             stream.SendNext(laserImpactPosition);
@@ -88,11 +88,6 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         }
         else if (stream.IsReading) {
             currentObjectIndex = (int)stream.ReceiveNext();
-            bool nowAlive = (bool)stream.ReceiveNext();
-            if(isAlive && !nowAlive) {
-                Die();
-            }
-            isAlive = nowAlive;
 
             // if(isHunter) {
             //     skinnedMeshRenderer.material = HunterMaterial;
@@ -115,6 +110,14 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 eye.GetComponent<LineRenderer>().enabled = true;
                 eye.transform.GetChild(0).gameObject.SetActive(true);
             }
+        }
+    }
+
+    [PunRPC]
+    public void RPC_SetAlive(bool isAlive) {
+        this.isAlive = isAlive;
+        if(!this.isAlive && !view.IsMine) {
+            Die();
         }
     }
 
@@ -168,6 +171,11 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
 
     void Update() {
+        //if D is pressed die
+        if(view.IsMine && Input.GetKeyDown(KeyCode.J)) {
+            Die();
+        }
+
         if(view.IsMine && !isHunter) {
             //check all the players if playerMovment.laserImpactPosition is touching or within 0.1f of this player
             foreach(GameObject player in GameObject.FindGameObjectsWithTag("Player")) {
@@ -566,14 +574,44 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     void Die() {
         isAlive = false;
-        skinnedMeshRenderer.material = GhostMaterial;
+        //call the Die trigger on the animator
+        animator.SetTrigger("Die");
+        if(view.IsMine) {
+            view.RPC("RPC_SetAlive", RpcTarget.AllBuffered, isAlive);
+        }
+        
+        //call deathanimation enumerator
+        StartCoroutine(DeathAnimation());
+
         rb.isKinematic = true;
         GetComponent<Collider>().enabled = false;
         currentObjectIndex = -1;
 
-        //set the animator speed to 10
-        animator.speed = 2f;
         
         
+        
+    }
+
+    //death animation 
+    IEnumerator DeathAnimation() {
+        yield return new WaitForSeconds(3f);
+        //instantiate a dead body at the player's position
+        GameObject deadBody = Instantiate(deadBodyPrefab, transform.position, transform.rotation);
+        
+        
+        animator.SetTrigger("GetUp");
+
+        
+
+        yield return new WaitForSeconds(0.25f);
+        transform.position += transform.forward * 0.5f;
+        skinnedMeshRenderer.material = GhostMaterial;
+        yield return new WaitForSeconds(1.5f);
+
+        animator.SetTrigger("GetUp");
+
+         yield return new WaitForSeconds(2f);
+
+        animator.speed = 1.2f;
     }
 }

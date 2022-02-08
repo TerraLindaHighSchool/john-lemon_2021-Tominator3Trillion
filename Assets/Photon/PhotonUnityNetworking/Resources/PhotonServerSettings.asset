@@ -43,6 +43,8 @@ MonoBehaviour:
   - RPC_StartGame
   - RPC_SetHunter
   - SetHunter
+  - RPC_SetAlive
+  - RPC_Emote
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
