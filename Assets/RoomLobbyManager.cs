@@ -15,6 +15,8 @@ public class RoomLobbyManager : MonoBehaviour
 
     public GameObject startGameButton;
 
+    
+
 
     void Start()
     {   
@@ -33,12 +35,14 @@ public class RoomLobbyManager : MonoBehaviour
         if(RoomLobbyPlayer.readyCount == PhotonNetwork.CurrentRoom.PlayerCount) {
             if(PhotonNetwork.IsMasterClient) {
                 startGameButton.SetActive(true);
+                
             }
         } else {
             startGameButton.SetActive(false);
         }
     }
 
+    
     
 
 

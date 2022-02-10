@@ -45,6 +45,7 @@ MonoBehaviour:
   - SetHunter
   - RPC_SetAlive
   - RPC_Emote
+  - OpenBigDoor
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

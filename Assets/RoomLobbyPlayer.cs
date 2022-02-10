@@ -23,7 +23,11 @@ public class RoomLobbyPlayer : MonoBehaviour
     public GameObject emoteUI;
 
     public AudioClip[] danceClips;
-    public AudioSource audioSource;
+    private AudioSource audioSource;
+
+    public DoorLobby door;
+
+    private DoorLobby bigDoor;
 
 
 
@@ -31,6 +35,13 @@ public class RoomLobbyPlayer : MonoBehaviour
         view = GetComponent<PhotonView>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+
+        //loop through all objects in the scene and find the big door
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("Door")) {
+            if(obj.name == "BigDoor") {
+                bigDoor = obj.GetComponent<DoorLobby>();
+            }
+        }
     }
 
     void Update()
@@ -79,10 +90,20 @@ public class RoomLobbyPlayer : MonoBehaviour
         isReady = !isReady;
 
         if(isReady) {
+            door.Open(true);
             readyCount++;
         }
         else {
+            door.Open(false);
             readyCount--;
+        }
+
+        Debug.Log(readyCount + ", " + PhotonNetwork.CurrentRoom.PlayerCount);
+        if(readyCount == PhotonNetwork.CurrentRoom.PlayerCount) {
+            Debug.Log("All players are ready");
+            bigDoor.Open(true);
+        } else {
+            bigDoor.Open(false);
         }
 
         Debug.Log("Ready Count: " + readyCount);
@@ -91,8 +112,10 @@ public class RoomLobbyPlayer : MonoBehaviour
         view.RPC("RPC_ReadyUp", RpcTarget.All);
     }
 
+
     [PunRPC]
     void RPC_ReadyUp() {
+
         if(view.IsMine) {
             return;
         }else {
@@ -102,15 +125,27 @@ public class RoomLobbyPlayer : MonoBehaviour
 
         if(isReady) {
             Debug.Log("Ready");
+            door.Open(true);
             readyCount++;
         }
         else {
             Debug.Log("Not Ready");
+            door.Open(false);
             readyCount--;
+        }
+
+        Debug.Log(readyCount + ", " + PhotonNetwork.CurrentRoom.PlayerCount);
+        if(readyCount == PhotonNetwork.CurrentRoom.PlayerCount) {
+            Debug.Log("All players are ready");
+            bigDoor.Open(true);
+        } else {
+            bigDoor.Open(false);
         }
 
 
     }
+
+    
 
 
 
