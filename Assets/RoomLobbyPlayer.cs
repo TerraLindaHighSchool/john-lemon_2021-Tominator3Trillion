@@ -22,11 +22,15 @@ public class RoomLobbyPlayer : MonoBehaviour
 
     public GameObject emoteUI;
 
+    public AudioClip[] danceClips;
+    public AudioSource audioSource;
+
 
 
     void Start() {
         view = GetComponent<PhotonView>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -134,5 +138,11 @@ public class RoomLobbyPlayer : MonoBehaviour
 
     private void Emote(int id) {
         animator.SetInteger("Emote", id);
+        if(id != -1) {
+            audioSource.clip = danceClips[id];
+            audioSource.Play();
+        } else {
+            audioSource.Stop();
+        }
     }
 }
