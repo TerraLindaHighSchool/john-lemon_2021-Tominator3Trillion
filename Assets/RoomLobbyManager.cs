@@ -55,6 +55,9 @@ public class RoomLobbyManager : MonoBehaviour
 
     public void LeaveRoom() {
         PhotonNetwork.LeaveRoom();
+        if(player.GetComponent<RoomLobbyPlayer>().isReady) {
+            player.GetComponent<RoomLobbyPlayer>().ReadyUp();
+        }
         PhotonNetwork.LoadLevel("Lobby");
     }
 

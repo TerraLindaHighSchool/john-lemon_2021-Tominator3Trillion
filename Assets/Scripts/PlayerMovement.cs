@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     public float health = 100f;
 
+    public GameObject hiderCanvas;
+
     private float angryTime = 0f;
     public float angryTimeMax = 5f;
     private float angryWarmUpTime = 30f;
@@ -139,7 +141,10 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             view.RPC("RPC_SetHunter", RpcTarget.AllBuffered, isHunter);
         }
 
-        if(isHunter && view.IsMine) {
+        if(!isHunter && view.IsMine) {
+            hiderCanvas.SetActive(true);
+        }
+        else if(isHunter && view.IsMine) {
             skinnedMeshRenderer.material = HunterMaterial;
             if(view.IsMine) {
                 hunterCanvas.SetActive(true);

@@ -7,7 +7,7 @@ public class RoomLobbyPlayer : MonoBehaviour
 {
 
 
-    private bool isReady = false;
+    public bool isReady = false;
     private bool isHunter = false;
 
     public static int readyCount = 0;
@@ -28,6 +28,8 @@ public class RoomLobbyPlayer : MonoBehaviour
     public DoorLobby door;
 
     private DoorLobby bigDoor;
+
+    public GameObject loadingCanvas;
 
 
 
@@ -152,13 +154,28 @@ public class RoomLobbyPlayer : MonoBehaviour
 
     public void StartGame() {
         PhotonNetwork.CurrentRoom.IsOpen = false;
+        Debug.Log("Starting Game");
         view.RPC("RPC_StartGame", RpcTarget.All);
     }
 
     [PunRPC]
     void RPC_StartGame() {
+        Camera.main.GetComponent<GoTo>().moving = true;
+        //loop through all UI elements and disable them
+        foreach(GameObject obj in GameObject.FindGameObjectsWithTag("UI")) {
+            obj.SetActive(false);
+        }
+        StartCoroutine(LoadGameWDealy());
+        
+    }
+
+    //enumerator to load the Game leve after a delay
+    IEnumerator LoadGameWDealy() {
+        yield return new WaitForSeconds(2);
+        loadingCanvas.SetActive(true);
         PhotonNetwork.LoadLevel("Game");
     }
+    
 
     public void CallEmote(int id) {
         view.RPC("RPC_Emote", RpcTarget.All, id);
