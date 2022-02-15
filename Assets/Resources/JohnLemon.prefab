@@ -2779,11 +2779,13 @@ MonoBehaviour:
   isHunter: 0
   health: 100
   hiderCanvas: {fileID: 4423197354803529836}
+  hiderFX: {fileID: 0}
+  hunterFX: {fileID: 0}
   angryTimeMax: 10
   angryTimeCooldown: 50
   hunterCanvas: {fileID: 972505018425483983}
   angryCooldownImage: {fileID: 1760521991757232087}
-  angryPost: {fileID: 2136900182696412619}
+  angryFX: {fileID: 0}
   angrySound: {fileID: 0}
   holdBreathTimeMax: 5
   holdBreathTimeCooldown: 20
