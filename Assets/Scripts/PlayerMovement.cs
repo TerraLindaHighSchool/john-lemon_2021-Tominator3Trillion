@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public float health = 100f;
 
     public GameObject hiderCanvas;
+    public GameObject hiderFX;
+
+    public GameObject hunterFX;
 
     private float angryTime = 0f;
     public float angryTimeMax = 5f;
@@ -31,7 +34,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public float angryTimeCooldown = 50f;
     public GameObject hunterCanvas;
     public Image angryCooldownImage;
-    public GameObject angryPost;
+    public GameObject angryFX;
     public AudioSource angrySound;
 
     private float holdBreathTime = 0f;
@@ -177,9 +180,9 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     void Update() {
         //if D is pressed die
-        if(view.IsMine && Input.GetKeyDown(KeyCode.J)) {
-            Die();
-        }
+        // if(view.IsMine && Input.GetKeyDown(KeyCode.J)) {
+        //     Die();
+        // }
 
         if(view.IsMine && !isHunter) {
             //check all the players if playerMovment.laserImpactPosition is touching or within 0.1f of this player
@@ -239,7 +242,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             if(angryWarmUpTime >= angryTimeCooldown) {
                 if(Input.GetKeyDown(KeyCode.Space)) {
                     angry = true;
-                    angryPost.SetActive(true);
+                    angryFX.SetActive(true);
                     //triple animation speed
                     animator.speed = 5f;
                     //triple audio speed
@@ -251,7 +254,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 angryTime += Time.deltaTime;
                 if(angryTime >= angryTimeMax) {
                     angry = false;
-                    angryPost.SetActive(false);
+                    angryFX.SetActive(false);
                     //reset animation speed
                     animator.speed = 1f;
                     //reset audio speed

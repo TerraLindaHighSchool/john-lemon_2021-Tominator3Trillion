@@ -936,6 +936,7 @@ GameObject:
   - component: {fileID: 1661434503534263874}
   - component: {fileID: 7313764989024091308}
   - component: {fileID: 4403453407206601221}
+  - component: {fileID: 2765620769825077141}
   m_Layer: 0
   m_Name: RoomLobbyPlayer
   m_TagString: Player
@@ -1000,7 +1001,7 @@ MonoBehaviour:
   emoteUI: {fileID: 1650958620135265789}
   danceClips:
   - {fileID: 8300000, guid: 9e148c9940c690449938a146e9cc6f8d, type: 3}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 528ccfdceeef0834eacb88135b64bbf4, type: 3}
   - {fileID: 8300000, guid: e846231b49755b34589e06db569ecdd6, type: 3}
   door: {fileID: 1388976399596855075}
   loadingCanvas: {fileID: 7950742397315681997}
@@ -1086,7 +1087,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.625
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1170,6 +1171,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!164 &2765620769825077141
+AudioReverbFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92199802907591413}
+  m_Enabled: 1
+  m_DryLevel: 0
+  m_Room: 0
+  m_RoomHF: 0
+  m_DecayTime: 0.4
+  m_DecayHFRatio: 0.5
+  m_ReflectionsLevel: -10000
+  m_ReverbLevel: 0
+  m_ReverbDelay: 0.04
+  m_Diffusion: 100
+  m_Density: 100
+  m_HFReference: 5000
+  m_RoomLF: 0
+  m_LFReference: 308
+  m_ReflectionsDelay: 0.029
+  m_ReverbPreset: 27
 --- !u!1 &92199802907591415
 GameObject:
   m_ObjectHideFlags: 0

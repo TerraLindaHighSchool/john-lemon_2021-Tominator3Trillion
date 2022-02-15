@@ -512,7 +512,7 @@ GameObject:
   - component: {fileID: 3444611229202098134}
   - component: {fileID: 4679951813161585895}
   m_Layer: 0
-  m_Name: PlayerEffects
+  m_Name: HiderEffects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,7 +641,7 @@ GameObject:
   - component: {fileID: 4232805959638216646}
   - component: {fileID: 1470310769029562391}
   m_Layer: 5
-  m_Name: HunterCananvas
+  m_Name: HunterCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
