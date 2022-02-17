@@ -34,6 +34,11 @@ public class RoomLobbyPlayer : MonoBehaviour
 
 
     void Start() {
+        if(bigDoor==null)
+            Init();
+    }
+
+    void Init() {
         view = GetComponent<PhotonView>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
@@ -78,6 +83,8 @@ public class RoomLobbyPlayer : MonoBehaviour
 
     [PunRPC]
     public void SetHunter(bool hunter) {
+        if(bigDoor==null)
+            Init();
         isHunter = hunter;
         if(isHunter) {
             skinnedMeshRenderer.material = hunterMaterial;
@@ -111,18 +118,18 @@ public class RoomLobbyPlayer : MonoBehaviour
         Debug.Log("Ready Count: " + readyCount);
         
 
-        view.RPC("RPC_ReadyUp", RpcTarget.All);
+        view.RPC("RPC_ReadyUp", RpcTarget.AllBuffered);
     }
 
 
     [PunRPC]
     void RPC_ReadyUp() {
+        if(bigDoor==null)
+            Init();
 
-        if(view.IsMine) {
-            return;
-        }else {
-            isReady = !isReady;
-        }
+        if(view.IsMine) return;
+
+        isReady = !isReady;
             
 
         if(isReady) {
@@ -137,7 +144,7 @@ public class RoomLobbyPlayer : MonoBehaviour
         }
 
         Debug.Log(readyCount + ", " + PhotonNetwork.CurrentRoom.PlayerCount);
-        if(readyCount == PhotonNetwork.CurrentRoom.PlayerCount) {
+        if(readyCount >= PhotonNetwork.CurrentRoom.PlayerCount) {
             Debug.Log("All players are ready");
             bigDoor.Open(true);
         } else {
@@ -178,12 +185,14 @@ public class RoomLobbyPlayer : MonoBehaviour
     
 
     public void CallEmote(int id) {
-        view.RPC("RPC_Emote", RpcTarget.All, id);
+        view.RPC("RPC_Emote", RpcTarget.AllBuffered, id);
         Emote(id);
     }
 
     [PunRPC]
     void RPC_Emote(int id) {
+        if(bigDoor==null)
+            Init();
         Debug.Log("Emote: " + id);
         Emote(id);
     }

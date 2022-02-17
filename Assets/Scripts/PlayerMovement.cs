@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private Quaternion rotation;
     private bool isWalking;
 
+    private bool upsideDown = false;
 
     public static bool choseHunter;
 
@@ -184,27 +185,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         //     Die();
         // }
 
-        if(view.IsMine && !isHunter) {
-            //check all the players if playerMovment.laserImpactPosition is touching or within 0.1f of this player
-            foreach(GameObject player in GameObject.FindGameObjectsWithTag("Player")) {
-                if(player == this.gameObject || player.GetComponent<PlayerMovement>().laserImpactPosition == Vector3.zero) {
-                    continue;
-                }
-                
-                //create a radius of 0.1f around the laser impact position 
-                Collider[] hitColliders = Physics.OverlapSphere(player.GetComponent<PlayerMovement>().laserImpactPosition, 0.1f);
-                //loop through all the colliders
-                foreach(Collider hitCollider in hitColliders) {
-                    //if the collider is this player
-                    if(hitCollider.gameObject == this.gameObject) {
-                        health -= Time.deltaTime * 50f;
-                        //break out of the loop
-                        break;
-                    }
-                }
-
-            }
-
+        if(view.IsMine && Input.GetKeyDown(KeyCode.U) && !upsideDown) {
+             StartCoroutine(UpsideDown());
         }
 
         
@@ -410,6 +392,14 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         }
     }
 
+    public IEnumerator UpsideDown() {
+        upsideDown = true;
+        transform.position = new Vector3(transform.position.x, transform.position.y + 300f, transform.position.z);
+        yield return new WaitForSeconds(10);
+        transform.position = new Vector3(transform.position.x, transform.position.y - 300f, transform.position.z);
+        upsideDown = false;
+    }
+
     void FixedUpdate()
     {
         if(!view.IsMine) {
@@ -534,6 +524,19 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                             impact.transform.rotation = lookRotation * Quaternion.Euler(0, 180f, 0);
 
                         }
+
+                        //create a radius of 0.1f around the laser impact position 
+                        Collider[] hitColliders = Physics.OverlapSphere(laserImpactPosition, 0.1f);
+                        //loop through all the colliders
+                        foreach(Collider hitCollider in hitColliders) {
+                            //if the collider is this player
+                            if(hitCollider.gameObject != this.gameObject && hitCollider.gameObject.tag == "Player") {
+                                //call the det health rpc
+                                hitCollider.gameObject.GetComponent<PlayerMovement>().LoseHealth(Time.deltaTime * 50f);
+                                //break out of the loop
+                                break;
+                            }
+                        }
                     }
                     
                 }
@@ -552,6 +555,18 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
                 }
 
             }
+        }
+    }
+
+
+    [PunRPC]
+    private void RPC_LoseHealth(float damage) {
+        health -= damage;
+    }
+
+    public void LoseHealth(float damage) {
+        if(view.IsMine) {
+            view.RPC("RPC_LoseHealth", RpcTarget.AllBuffered, damage);
         }
     }
 

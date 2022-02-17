@@ -46,6 +46,7 @@ MonoBehaviour:
   - RPC_SetAlive
   - RPC_Emote
   - OpenBigDoor
+  - RPC_LoseHealth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

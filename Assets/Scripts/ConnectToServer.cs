@@ -28,7 +28,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     {
         Debug.Log("Joined lobby");
         text.text = "Connected";
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Menu");
     }
 
 }
