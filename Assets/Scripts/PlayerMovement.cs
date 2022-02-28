@@ -13,7 +13,15 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private Quaternion rotation;
     private bool isWalking;
 
+    [HideInInspector]
+    public float distanceWalked = 0f;
+    private Vector3 lastPosition = Vector3.zero;
+    public float requiredDistance = 500f;
+    public Slider distanceWalkedSlider;
+    
+
     private bool upsideDown = false;
+    private bool upsideDownCharged = true;
 
     public static bool choseHunter;
 
@@ -138,6 +146,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
         map.SetActive(false);
 
+        distanceWalkedSlider.maxValue = requiredDistance;
+
         
 
         if(view.IsMine) {
@@ -180,13 +190,40 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
 
     void Update() {
+        if(view.IsMine && !isHunter) {
+            //update distance walked
+            distanceWalked += Vector3.Distance(transform.position, lastPosition);
+            lastPosition = transform.position;
+            
+            //update slider
+            distanceWalkedSlider.value = distanceWalked;
+
+
+            if(distanceWalked > requiredDistance) {
+                distanceWalked = requiredDistance;
+            }
+        }
+
+
         //if D is pressed die
         // if(view.IsMine && Input.GetKeyDown(KeyCode.J)) {
         //     Die();
         // }
 
-        if(view.IsMine && Input.GetKeyDown(KeyCode.U) && !upsideDown) {
+        if(view.IsMine && Input.GetKeyDown(KeyCode.U) && !upsideDown && upsideDownCharged && (!isHunter||!isAlive)) {
              StartCoroutine(UpsideDown());
+        }
+
+        // if touching another non hunter upsideDownCharged = true, check every 10 seconds
+        if(Time.timeSinceLevelLoad % 10 == 0 && view.IsMine && !upsideDown && !upsideDownCharged && !isHunter && isAlive) {
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+            foreach(Collider col in hitColliders) {
+                if(!col.gameObject.GetComponent<PlayerMovement>().isHunter) {
+                    upsideDownCharged = true;
+                }
+            }
+        } else if(!isAlive) {
+            upsideDownCharged = true;
         }
 
         
@@ -393,6 +430,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     }
 
     public IEnumerator UpsideDown() {
+        upsideDownCharged=false;
         upsideDown = true;
         transform.position = new Vector3(transform.position.x, transform.position.y + 300f, transform.position.z);
         yield return new WaitForSeconds(10);

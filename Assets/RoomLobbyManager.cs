@@ -58,6 +58,7 @@ public class RoomLobbyManager : MonoBehaviour
         if(player.GetComponent<RoomLobbyPlayer>().isReady) {
             player.GetComponent<RoomLobbyPlayer>().ReadyUp();
         }
+        RoomLobbyPlayer.readyCount=0;
         PhotonNetwork.LoadLevel("Menu");
     }
 

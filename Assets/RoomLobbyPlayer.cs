@@ -49,6 +49,7 @@ public class RoomLobbyPlayer : MonoBehaviour
                 bigDoor = obj.GetComponent<DoorLobby>();
             }
         }
+        PlayerMovement.choseHunter = false;
     }
 
     void Update()
