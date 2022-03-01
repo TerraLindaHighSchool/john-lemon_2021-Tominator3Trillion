@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using TMPro;
 
 [RequireComponent(typeof(PhotonView))]
 public class PlayerMovement : MonoBehaviour, IPunObservable
@@ -18,6 +19,10 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private Vector3 lastPosition = Vector3.zero;
     public float requiredDistance = 500f;
     public Slider distanceWalkedSlider;
+    public TextMeshProUGUI distanceWalkedPercentText;
+    private bool reachedRequiredDistance = false;
+
+    public GameObject allCanvas;
     
 
     private bool upsideDown = false;
@@ -147,10 +152,14 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         map.SetActive(false);
 
         distanceWalkedSlider.maxValue = requiredDistance;
+        distanceWalkedPercentText.text = "0%";
+        distanceWalked = 0f;
+
 
         
 
         if(view.IsMine) {
+            allCanvas.SetActive(true);
             isHunter = choseHunter;
             view.RPC("RPC_SetHunter", RpcTarget.AllBuffered, isHunter);
         }
@@ -197,10 +206,12 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             
             //update slider
             distanceWalkedSlider.value = distanceWalked;
+            distanceWalkedPercentText.text = (distanceWalked / requiredDistance * 100f).ToString("F0") + "%";
 
 
             if(distanceWalked > requiredDistance) {
                 distanceWalked = requiredDistance;
+                reachedRequiredDistance = true;
             }
         }
 
