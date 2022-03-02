@@ -1000,7 +1000,7 @@ MonoBehaviour:
   skinnedMeshRenderer: {fileID: 92199802904481789}
   emoteUI: {fileID: 1650958620135265789}
   danceClips:
-  - {fileID: 8300000, guid: 9e148c9940c690449938a146e9cc6f8d, type: 3}
+  - {fileID: 8300000, guid: 52bf62cce2ae6c0478a9a495d4385ff7, type: 3}
   - {fileID: 8300000, guid: 528ccfdceeef0834eacb88135b64bbf4, type: 3}
   - {fileID: 8300000, guid: e846231b49755b34589e06db569ecdd6, type: 3}
   door: {fileID: 1388976399596855075}

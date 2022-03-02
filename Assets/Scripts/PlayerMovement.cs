@@ -20,9 +20,11 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public float requiredDistance = 500f;
     public Slider distanceWalkedSlider;
     public TextMeshProUGUI distanceWalkedPercentText;
-    private bool reachedRequiredDistance = false;
+    public bool reachedRequiredDistance = false;
 
     public GameObject allCanvas;
+
+    public GameTimer timer;
     
 
     private bool upsideDown = false;
@@ -30,10 +32,13 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     public static bool choseHunter;
 
-    private bool isAlive = true;
+    public bool isAlive = true;
     public bool isHunter = false;
     private bool angry = false;
     private bool holdBreath = false;
+
+    private static int hidersAlive = 0;
+    private static int hidersNotSuccesful = 0;
 
     public float health = 100f;
 
@@ -103,6 +108,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             stream.SendNext(angry);
             stream.SendNext(holdBreath);
             stream.SendNext(laserImpactPosition);
+            stream.SendNext(distanceWalked);
             
         }
         else if (stream.IsReading) {
@@ -115,6 +121,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             angry = (bool)stream.ReceiveNext();
             holdBreath = (bool)stream.ReceiveNext();
             wantedLaserImpactPosition = (Vector3)stream.ReceiveNext();
+            distanceWalked = (float)stream.ReceiveNext();
             
         }
     }
@@ -124,6 +131,8 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public void RPC_SetHunter(bool isHunter) {
         this.isHunter = isHunter;
         if(isHunter) {
+            hidersAlive--;
+            hidersNotSuccesful--;
             skinnedMeshRenderer.material = HunterMaterial;
             foreach(GameObject eye in eyes) {
                 eye.GetComponent<LineRenderer>().enabled = true;
@@ -155,13 +164,18 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         distanceWalkedPercentText.text = "0%";
         distanceWalked = 0f;
 
+        hidersAlive++;
+        hidersNotSuccesful++;
 
+        Debug.Log("Hiders alive: " + hidersAlive);
         
 
         if(view.IsMine) {
             allCanvas.SetActive(true);
             isHunter = choseHunter;
             view.RPC("RPC_SetHunter", RpcTarget.AllBuffered, isHunter);
+        } else {
+            allCanvas.SetActive(false);
         }
 
         if(!isHunter && view.IsMine) {
@@ -194,26 +208,14 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
         }
 
+        
+
     }
 
 
 
     void Update() {
-        if(view.IsMine && !isHunter) {
-            //update distance walked
-            distanceWalked += Vector3.Distance(transform.position, lastPosition);
-            lastPosition = transform.position;
-            
-            //update slider
-            distanceWalkedSlider.value = distanceWalked;
-            distanceWalkedPercentText.text = (distanceWalked / requiredDistance * 100f).ToString("F0") + "%";
-
-
-            if(distanceWalked > requiredDistance) {
-                distanceWalked = requiredDistance;
-                reachedRequiredDistance = true;
-            }
-        }
+        
 
 
         //if D is pressed die
@@ -451,6 +453,41 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     void FixedUpdate()
     {
+        if(!view.IsMine && !isHunter && distanceWalked > requiredDistance && !reachedRequiredDistance) {
+            hidersNotSuccesful--;
+            reachedRequiredDistance = true;
+            if(hidersNotSuccesful <= 0) {
+                StartCoroutine(timer.EndGame());
+            }
+        }
+        if(view.IsMine && !isHunter) {
+            //update distance walked
+            if( Vector3.Distance(transform.position, lastPosition) < 1f && Vector3.Distance(transform.position, lastPosition) > 0.002f) {
+                distanceWalked += Vector3.Distance(transform.position, lastPosition);
+            }
+            lastPosition = transform.position;
+            
+            //update slider
+            distanceWalkedSlider.value = distanceWalked;
+            distanceWalkedPercentText.text = (distanceWalked / requiredDistance * 100f).ToString("F0") + "%";
+            Debug.Log(distanceWalked);
+            
+
+
+            if(distanceWalked >= requiredDistance && !reachedRequiredDistance) {
+                distanceWalked = requiredDistance;
+                reachedRequiredDistance = true;
+                hidersNotSuccesful--;
+                if(hidersNotSuccesful <= 0) {
+                    StartCoroutine(timer.EndGame());
+                }
+            }
+            if(distanceWalked > requiredDistance) {
+                distanceWalked = requiredDistance;
+            }
+        }
+
+
         if(!view.IsMine) {
             if(animator.GetBool("IsWalking")) {
                 if(!audioSource.isPlaying) {
@@ -645,6 +682,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     }
 
     void Die() {
+        GameTimer.timeMultiplier += 0.5f;
         isAlive = false;
         //call the Die trigger on the animator
         animator.SetTrigger("Die");
@@ -658,6 +696,13 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         rb.isKinematic = true;
         GetComponent<Collider>().enabled = false;
         currentObjectIndex = -1;
+
+        //check if all players are dead
+        hidersAlive--;
+        if(hidersAlive <= 0) {
+            StartCoroutine(timer.EndGame());
+        }
+
 
         
         
