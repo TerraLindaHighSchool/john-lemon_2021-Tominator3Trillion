@@ -253,6 +253,7 @@ Transform:
   m_Children:
   - {fileID: 727647779}
   - {fileID: 963194228}
+  - {fileID: 3986969487128265663}
   m_Father: {fileID: 7934731898602671324}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 44.55, y: 0, z: 0}
@@ -636,7 +637,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9d14603e74201c245a9e0a380ea0f9ad, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.257
+  m_Volume: 0.14
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1449,6 +1450,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956b9516fe9766c40bffe0eeac32da0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2467646659609432972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3986969487128265663}
+  - component: {fileID: 7052326843247450084}
+  - component: {fileID: 5897308663028677135}
+  m_Layer: 0
+  m_Name: AngryFx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3986969487128265663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467646659609432972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2142255354}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7052326843247450084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467646659609432972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sharedProfile: {fileID: 11400000, guid: af5358c4ff094eb42bb78e9e6d7d552f, type: 2}
+  isGlobal: 0
+  blendDistance: 0
+  weight: 1
+  priority: 10
+--- !u!65 &5897308663028677135
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2467646659609432972}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2700697836873401876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1669,7 +1732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f949fc9ce3696ba4d888a0ebc5f15791, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingTime: 120
+  startingTime: 180
   hunterWin: {fileID: 3869948451292619518}
   hiderWin: {fileID: 1231951718898458056}
 --- !u!1 &3869948451292619518
@@ -3819,7 +3882,7 @@ MonoBehaviour:
   angryTimeCooldown: 50
   hunterCanvas: {fileID: 972505018425483983}
   angryCooldownImage: {fileID: 1760521991757232087}
-  angryFX: {fileID: 0}
+  angryFX: {fileID: 2467646659609432972}
   angrySound: {fileID: 0}
   holdBreathTimeMax: 20
   holdBreathTimeCooldown: 30
@@ -4275,15 +4338,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94795db27abef264f84d5343d2020cf4, type: 3}
---- !u!108 &5562730920877839261 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 4792060165349596108, guid: 94795db27abef264f84d5343d2020cf4,
-    type: 3}
-  m_PrefabInstance: {fileID: 1130996248228595793}
-  m_PrefabAsset: {fileID: 0}
---- !u!199 &1588768164790458422 stripped
-ParticleSystemRenderer:
-  m_CorrespondingSourceObject: {fileID: 1855037890787004519, guid: 94795db27abef264f84d5343d2020cf4,
+--- !u!1 &1515552868715580214 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1925931323179582311, guid: 94795db27abef264f84d5343d2020cf4,
     type: 3}
   m_PrefabInstance: {fileID: 1130996248228595793}
   m_PrefabAsset: {fileID: 0}
@@ -4293,9 +4350,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1130996248228595793}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1515552868715580214 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1925931323179582311, guid: 94795db27abef264f84d5343d2020cf4,
+--- !u!199 &1588768164790458422 stripped
+ParticleSystemRenderer:
+  m_CorrespondingSourceObject: {fileID: 1855037890787004519, guid: 94795db27abef264f84d5343d2020cf4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1130996248228595793}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &5562730920877839261 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 4792060165349596108, guid: 94795db27abef264f84d5343d2020cf4,
     type: 3}
   m_PrefabInstance: {fileID: 1130996248228595793}
   m_PrefabAsset: {fileID: 0}
@@ -4483,9 +4546,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94795db27abef264f84d5343d2020cf4, type: 3}
---- !u!108 &292548036586413909 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 4792060165349596108, guid: 94795db27abef264f84d5343d2020cf4,
+--- !u!4 &3150947870503702854 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7869457418129462751, guid: 94795db27abef264f84d5343d2020cf4,
     type: 3}
   m_PrefabInstance: {fileID: 5084431724667913369}
   m_PrefabAsset: {fileID: 0}
@@ -4495,9 +4558,9 @@ ParticleSystemRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 5084431724667913369}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &3150947870503702854 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7869457418129462751, guid: 94795db27abef264f84d5343d2020cf4,
+--- !u!108 &292548036586413909 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 4792060165349596108, guid: 94795db27abef264f84d5343d2020cf4,
     type: 3}
   m_PrefabInstance: {fileID: 5084431724667913369}
   m_PrefabAsset: {fileID: 0}
